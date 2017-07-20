@@ -204,7 +204,7 @@ function plot3d(robot, q, varargin)
     else
         C = [];
         for c=opt.color
-            C = [C; colorname(c{1})];
+            C = [C; (c{1})];
         end
     end
     
@@ -357,6 +357,7 @@ function opt = plot_options(robot, optin)
     else
         % workspace is provided
         reach = min(abs(opt.workspace));
+        opt.ws = opt.workspace;
         if opt.tiles
             % set xy limits to be integer multiple of tilesize
             opt.ws(1:4) = opt.tilesize * round(opt.workspace(1:4)/opt.tilesize);
