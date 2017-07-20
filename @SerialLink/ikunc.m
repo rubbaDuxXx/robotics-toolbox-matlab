@@ -69,7 +69,7 @@
 function [qstar, error, exitflag] = ikunc(robot, T, q0, options)
 
     % check if Optimization Toolbox exists, we need it
-    assert( logical(exist('fminunc')), 'rtb:ikunc:nosupport', 'Optimization Toolbox required');
+    assert( exist('fmincon', 'file') ~= 0, 'rtb:ikunc:nosupport', 'Optimization Toolbox required');
     
     if isa(T, 'SE3')
         T = T.T;
