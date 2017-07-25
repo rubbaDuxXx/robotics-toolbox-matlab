@@ -93,7 +93,7 @@ function plot3d(robot, q, varargin)
     
     assert( ~robot.mdh, 'RTB:plot3d:badmodel', '3D models are defined for standard, not modified, DH parameters');
     
-    clf
+%     clf
     opt = plot_options(robot, varargin);
     
     %-- load the shape if need be
@@ -223,6 +223,14 @@ function plot3d(robot, q, varargin)
             
             patch('Faces', robot.faces{link+1}, 'Vertices', robot.points{link+1}, ...
                 'FaceColor', C(mod(link,ncolors)+1,:), 'EdgeAlpha', 0, 'FaceAlpha', opt.alpha);
+        elseif link == robot.n
+            h.link(link) = hgtransform('Tag', sprintf('link%d', link), 'Parent', group);
+
+            robot.points{link+1}(:,3) = -robot.points{link+1}(1,1) - robot.points{link+1}(:,3);
+            robot.points{link+1}(:,1) = -robot.points{link+1}(:,1);
+            patch('Faces', robot.faces{link+1}, 'Vertices', robot.points{link+1}, ...
+                'FaceColor', C(mod(link,ncolors)+1,:), 'EdgeAlpha', 0, 'FaceAlpha', opt.alpha, ...
+            'Parent', h.link(link-1));
         else
             h.link(link) = hgtransform('Tag', sprintf('link%d', link), 'Parent', group);
 
@@ -236,10 +244,10 @@ function plot3d(robot, q, varargin)
     if opt.wrist
         if opt.arrow
             h.wrist = trplot(eye(4,4), 'labels', upper(opt.wristlabel), ...
-                'arrow', 'rgb', 'length', 0.4);
+                'arrow', 'rgb', 'length', 0.2);
         else
             h.wrist = trplot(eye(4,4), 'labels', upper(opt.wristlabel), ...
-                'rgb', 'length', 0.4);
+                'rgb', 'length', 0.2);
         end
     else
         h.wrist = [];
